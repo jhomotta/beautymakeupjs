@@ -11,9 +11,11 @@ import { PconfigService } from './pconfig.service';
 })
 export class ProductService {
   private urlEndPoint: string;
+  private productUrl = 'api/product/product.js';
 
   constructor(private http: HttpClient, private pConfigS: PconfigService) {
     this.urlEndPoint = this.pConfigS.getApiUrl() + '/product';
+    this.urlEndPoint = 'api/product/product.js';
   }
 
   getAll(): Observable<Product[]> {

@@ -9,6 +9,7 @@ export interface Product {
   idPProductType: number;
   idManufacturer: number;
   images: Image[];
+  starRating:  number;
 }
 
 

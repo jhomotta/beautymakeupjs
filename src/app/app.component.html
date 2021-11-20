@@ -1,10 +1,7 @@
-<h1>Rutas and lazyload app</h1>
-<ul>
-  <li><a href="/catalog/add">add product</a></li>
-  <li><a href="/catalog/edit">edit product</a></li>
-  <li><a href="/catalog/list">list product</a></li>
-  <li><a href="/catalog/item">item product</a></li>
-</ul>
+<!--https://scotch.io/courses/build-your-first-angular-website/creating-an-angular-header-and-footerng g component components/footer-->
 
-<router-outlet></router-outlet>
-
+<app-header></app-header>
+<div class="container" style="max-width: 98%; margin: 2% auto;">
+    <router-outlet ></router-outlet>
+</div>
+<app-footer></app-footer>
