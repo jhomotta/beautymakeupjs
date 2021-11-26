@@ -2,39 +2,26 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { Product } from '../model/product';
 import { catchError, tap } from 'rxjs/operators';
 import { PconfigService } from './pconfig.service';
+import { Manufacturer } from '../model/manufacturer';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class ProductService {
+export class ManufacturerService {
   private urlEndPoint: string;
-  private productUrl = 'api/product/product.js';
 
   constructor(private http: HttpClient, private pConfigS: PconfigService) {
-    this.urlEndPoint = this.pConfigS.getApiUrl();
-    //this.urlEndPoint = 'api/product/product.js';
+    this.urlEndPoint = this.pConfigS.getApiUrl() + '/manufacturer';
   }
 
-  getAll(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.urlEndPoint  + '/product').pipe(
+  getAll(): Observable<Manufacturer[]> {
+    return this.http.get<Manufacturer[]>(this.urlEndPoint).pipe(
       tap((data) => data),
       catchError(this.handleError)
     );
   }
-
-  setProduct(item: Product): Observable<Product> {
-    console.log(item);
-    const headers = { 'content-type': 'application/json'}  
-    const body=JSON.stringify(item);
-    return this.http.post<Product>(this.urlEndPoint  + '/product', item, {'headers':headers}).pipe(
-      tap((data) => data),
-      catchError(this.handleError)
-    )
-  }
-
   private handleError(err: HttpErrorResponse) {
     let errorMesage = '';
     if (err.error instanceof ErrorEvent) {

@@ -16,7 +16,7 @@
       </div>
       <div class='table-responsive'>
         <table class='table'
-               *ngIf='products.length'>
+               *ngIf='products'>
           <thead>
             <tr>
               <th>
@@ -54,6 +54,7 @@
             </tr>
           </tbody>
         </table>
+        <div *ngIf='!products'>No Products</div>
       </div>
   
     </div>

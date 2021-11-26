@@ -11,6 +11,3 @@ export interface Product {
   images: Image[];
   starRating:  number;
 }
-
-
-
