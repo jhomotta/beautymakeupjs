@@ -24,6 +24,13 @@ export class PproductService {
       catchError(this.handleError)
     );
   }
+
+  getItem(id: String): Observable<Pproduct> {
+    return this.http.get<Pproduct>(this.urlEndPoint  + '/' + id).pipe(
+      tap((data) => data),
+      catchError(this.handleError)
+    );
+  }
   
   private handleError(err: HttpErrorResponse) {
     let errorMesage = '';

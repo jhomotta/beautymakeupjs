@@ -25,14 +25,6 @@ export class AddComponent implements OnInit {
   manufacturers: Manufacturer[] = [];
   errorMessage: string = '';
 
-  Hobbies: string[] = [
-    'Acrobatics',
-    'Acting',
-    'Animation',
-    'Astronomy',
-    'Baking'
-  ];
-
   constructor(private pproductService: PproductService,
               private manufacturerService: ManufacturerService,
               private productService: ProductService) { }
@@ -75,24 +67,6 @@ export class AddComponent implements OnInit {
     this.product.starRating= form.value.starRating;
     console.log(this.product);
     
-     /*let product = {
-      "description": "jojo",
-      "idManufacturer": 4,
-      "idPProductType": 5,
-      "images": [
-        {
-          "pathPicture": "https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"
-        }
-      ],
-      "name": "test",
-      "quantityProducts": 300,
-      "starRating": 2.2,
-      "state": true,
-      "unitCost": 10
-    };
-    */
-    //this.product.name = form.value.name;
-
     this.sub = this.productService.setProduct(this.product).subscribe({
       next: products => {
         console.log("*********");

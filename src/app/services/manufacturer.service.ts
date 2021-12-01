@@ -22,6 +22,14 @@ export class ManufacturerService {
       catchError(this.handleError)
     );
   }
+
+  getItem(id: String): Observable<Manufacturer> {
+    return this.http.get<Manufacturer>(this.urlEndPoint  + '/' + id).pipe(
+      tap((data) => data),
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(err: HttpErrorResponse) {
     let errorMesage = '';
     if (err.error instanceof ErrorEvent) {

@@ -1,1 +1,131 @@
-<p>edit works!</p>
+<form
+  #productForm="ngForm"
+  (ngSubmit)="productForm.form.valid && onSubmit(productForm)"
+>
+  <div class="form-group">
+    <label>Name</label>
+    <input
+      type="text"
+      name="name"
+      class="form-control"
+      [(ngModel)]="product.name"
+      #name="ngModel"
+      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
+      required
+    />
+    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
+      <p *ngIf="name.errors?.required">Name is required</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>description</label>
+    <input
+      type="text"
+      name="description"
+      class="form-control"
+      [(ngModel)]="product.description"
+      #name="ngModel"
+      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
+      required
+    />
+    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
+      <p *ngIf="name.errors?.required">description is required</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>quantityProducts</label>
+    <input
+      type="number"
+      name="quantityProducts"
+      class="form-control"
+      [(ngModel)]="product.quantityProducts"
+      #name="ngModel"
+      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
+      required
+    />
+    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
+      <p *ngIf="name.errors?.required">quantityProducts is required</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>unitCost</label>
+    <input
+      type="number"
+      name="unitCost"
+      class="form-control"
+      [(ngModel)]="product.unitCost"
+      #name="ngModel"
+      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
+      required
+    />
+    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
+      <p *ngIf="name.errors?.required">unitCost is required</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>idPProductType</label>
+    <select
+      class="form-control"
+      name="idPProductType"
+      [(ngModel)]="product.idPProductType"
+    >
+      <option value="">Select an option</option>
+      <option *ngFor="let item of pproducts" [value]="item.id">
+        {{ item.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>idManufacturer</label>
+    <select
+      class="form-control"
+      name="idManufacturer"
+      [(ngModel)]="product.idManufacturer"
+    >
+      <option value="">Select an option</option>
+      <option *ngFor="let item of manufacturers" [value]="item.id">
+        {{ item.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>images</label>
+    <input
+      type="string"
+      name="images"
+      class="form-control"
+      [(ngModel)]="product.images"
+      #name="ngModel"
+      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
+      required
+    />
+    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
+      <p *ngIf="name.errors?.required">images is required</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>starRating</label>
+    <input
+      type="number"
+      name="starRating"
+      class="form-control"
+      [(ngModel)]="product.starRating"
+      #name="ngModel"
+      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
+      required
+    />
+    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
+      <p *ngIf="name.errors?.required">starRating is required</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-danger btn-block">Submit</button>
+  </div>
+</form>

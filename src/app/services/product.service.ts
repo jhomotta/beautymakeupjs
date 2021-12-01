@@ -14,12 +14,12 @@ export class ProductService {
   private productUrl = 'api/product/product.js';
 
   constructor(private http: HttpClient, private pConfigS: PconfigService) {
-    this.urlEndPoint = this.pConfigS.getApiUrl();
+    this.urlEndPoint = this.pConfigS.getApiUrl()  + '/product';
     //this.urlEndPoint = 'api/product/product.js';
   }
 
   getAll(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.urlEndPoint  + '/product').pipe(
+    return this.http.get<Product[]>(this.urlEndPoint).pipe(
       tap((data) => data),
       catchError(this.handleError)
     );
@@ -29,10 +29,17 @@ export class ProductService {
     console.log(item);
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(item);
-    return this.http.post<Product>(this.urlEndPoint  + '/product', item, {'headers':headers}).pipe(
+    return this.http.post<Product>(this.urlEndPoint, item, {'headers':headers}).pipe(
       tap((data) => data),
       catchError(this.handleError)
     )
+  }
+
+  getProduct(id: String): Observable<Product> {
+    return this.http.get<Product>(this.urlEndPoint  + '/' + id).pipe(
+      tap((data) => data),
+      catchError(this.handleError)
+    );
   }
 
   private handleError(err: HttpErrorResponse) {

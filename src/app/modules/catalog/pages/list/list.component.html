@@ -41,7 +41,9 @@
                   [style.magin.px]='imageMargin'
                 >
               </td>
-              <td><a [routerLink]="['/product', product.id]">{{ product.name }}</a></td>
+              <!--li><a routerLink="/first-component" routerLinkActive="active">First Component</a></li-->
+
+              <td><a [routerLink]="['../product', product.id]">{{ product.name }}</a></td>
               <td>{{ product.description }}</td>
               <td>{{ product.quantityProducts }}</td>
               <td>{{ product.unitCost | currency:'USD':'symbol':'1.2-2' }}</td>
