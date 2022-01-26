@@ -23,17 +23,7 @@ export class ListComponent implements OnInit, OnDestroy {
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.sub = this.productService.getAll().subscribe({
-      next: products => {
-        this.products = products;
-        console.log(this.products);
-        this.filteredProducts = this.products;
-        console.log(this.filteredProducts);
-      },
-      error: err => this.errorMessage = err
-    });
-    //this.listFilter = 'r';
-
+    this.getall();
   }
 
   ngOnDestroy(): void {
@@ -46,7 +36,6 @@ export class ListComponent implements OnInit, OnDestroy {
   }
   set listFilter(value: string) {
     this._listFilter = value;
-    console.log('In setter: ', value);
     this.filteredProducts = this.performFilter(value);
   }
 
@@ -62,6 +51,29 @@ export class ListComponent implements OnInit, OnDestroy {
 
   onRatingClicked(message: string): void {
     this.pageTitle = 'Product List ' + message;
+  }
+
+  deleteItem(id: number){ 
+    console.log(id);
+    this.sub = this.productService.deleteItem(id).subscribe({
+      next: itemid => {
+        console.log(itemid);
+        this.getall();
+        
+      },
+      error: err => this.errorMessage = err
+    }); 
+  }
+
+  getall() {
+    this.sub = this.productService.getAll().subscribe({
+      next: products => {
+        this.products = products;
+        this.filteredProducts = this.products;
+      },
+      error: err => this.errorMessage = err
+    });
+    //this.listFilter = 'r';
   }
 
 }

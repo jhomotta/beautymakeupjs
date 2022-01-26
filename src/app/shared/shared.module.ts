@@ -1,15 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FooterComponent } from './footer/footer.component';
+import { FormsModule } from '@angular/forms';
 
-
+import { StarComponent } from './star.component';
 
 @NgModule({
-  declarations: [
-    FooterComponent
-  ],
   imports: [
     CommonModule
+  ],
+  declarations: [
+    StarComponent
+  ],
+  exports: [
+    StarComponent,
+    CommonModule,
+    FormsModule
   ]
 })
 export class SharedModule { }

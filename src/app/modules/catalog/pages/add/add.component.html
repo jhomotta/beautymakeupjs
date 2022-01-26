@@ -1,131 +1,237 @@
-<form
-  #productForm="ngForm"
-  (ngSubmit)="productForm.form.valid && onSubmit(productForm)"
->
-  <div class="form-group">
-    <label>Name</label>
-    <input
-      type="text"
-      name="name"
-      class="form-control"
-      [(ngModel)]="model.name"
-      #name="ngModel"
-      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
-      required
-    />
-    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
-      <p *ngIf="name.errors?.required">Name is required</p>
-    </div>
+<div class="card">
+  <div class="card-header">
+    {{pageTitle}}
   </div>
 
-  <div class="form-group">
-    <label>description</label>
-    <input
-      type="text"
-      name="description"
-      class="form-control"
-      [(ngModel)]="model.description"
-      #name="ngModel"
-      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
-      required
-    />
-    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
-      <p *ngIf="name.errors?.required">description is required</p>
-    </div>
+  <div class="card-body">
+    <form novalidate
+          (ngSubmit)="saveProduct()"
+          [formGroup]="productForm">
+
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+                for="nameId">First Name</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                  id="nameId"
+                  type="text"
+                  placeholder="First Name (required)"
+                  formControlName="name"
+                  [ngClass]="{'is-invalid': (productForm.get('name')?.touched ||
+                                            productForm.get('name')?.dirty) &&
+                                            !productForm.get('name')?.valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="productForm.get('name')?.errors?.required">
+              Please enter your first name.
+            </span>
+            <span *ngIf="productForm.get('name')?.errors?.minlength">
+              The first name must be longer than 3 characters.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+                for="descriptionId">Description</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                  id="descriptionId"
+                  type="text"
+                  placeholder="description (required)"
+                  formControlName="description"
+                  [ngClass]="{'is-invalid': (productForm.get('description')?.touched ||
+                                            productForm.get('description')?.dirty) &&
+                                            !productForm.get('description')?.valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="productForm.get('description')?.errors?.required">
+              Please enter your first description.
+            </span>
+            <span *ngIf="productForm.get('description')?.errors?.minlength">
+              The first description must be longer than 3 characters.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      
+      <div formArrayName="images" *ngFor="let item of images.controls; let i = index">
+        <div [formGroupName]="i">
+          <div class="form-group row mb-2">
+
+
+            <label class="col-md-2 col-form-label"
+            attr.for="{{'id' + i}}">id</label>
+            <div class="col-md-3">
+              <input class="form-control"
+                      id="{{'id' + i}}"
+                      type="text"
+                      placeholder="id"
+                      formControlName="id">
+            </div>
+
+            <label class="col-md-2 col-form-label"
+                    attr.for="{{ 'pathPicture' + i}}">pathPicture</label>
+            <div class="col-md-8">
+              <input class="form-control"
+                      id="{{ 'pathPicture' + i}}"
+                      type="text"
+                      placeholder="pathPicture (required)"
+                      formControlName="pathPicture"
+                      [ngClass]="{'is-invalid': (productForm.get('pathPicture')?.touched ||
+                                                productForm.get('pathPicture')?.dirty) &&
+                                                !productForm.get('pathPicture')?.valid }" />
+              <span class="invalid-feedback">
+                <span *ngIf="productForm.get('pathPicture')?.errors?.required">
+                  Please enter your first pathPicture.
+                </span>
+                <span *ngIf="productForm.get('pathPicture')?.errors?.minlength">
+                  The first pathPicture must be longer than 3 characters.
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row mb-2">
+        <div class="col-md-4">
+          <button class="btn btn-outline-primary"
+                  type="button"
+                  [title]="images.valid ? 'Add another mailing address' : 'Disabled until the existing address data is valid'"
+                  [disabled]="!images.valid"
+                  (click)="addImages()">
+            Add Another Image
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="quantityProductsId">quantityProducts</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="quantityProductsId"
+                 type="number"
+                 formControlName="quantityProducts"
+                 [ngClass]="{'is-invalid': (productForm.get('quantityProducts')?.touched || 
+                                             productForm.get('quantityProducts')?.dirty) && 
+                                             !productForm.get('quantityProducts')?.valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="productForm.get('quantityProducts')?.errors?.range">
+              Please inser numbert
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="quantityProductsId">unitCost</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="unitCostId"
+                 type="number"
+                 formControlName="unitCost"
+                 [ngClass]="{'is-invalid': (productForm.get('unitCost')?.touched || 
+                                             productForm.get('unitCost')?.dirty) && 
+                                             !productForm.get('unitCost')?.valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="productForm.get('unitCost')?.errors?.range">
+              Please insert unitCost
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="idPProductType">idPProductType</label>
+        <div class="col-md-8">
+          <select class="form-control"
+                  id="idPProductType"
+                  formControlName="idPProductType">
+            <option value="">Select an option</option>
+            <option *ngFor="let item of pproducts" [value]="item.id">
+              {{ item.name }}
+            </option>            
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="idManufacturer">idManufacturer</label>
+        <div class="col-md-8">
+          <select class="form-control"
+                  id="idManufacturer"
+                  formControlName="idManufacturer">
+            <option 
+            value=""
+            disabled
+            selected
+            hidden>Select an option</option>
+            <option *ngFor="let item of manufacturers" [value]="item.id">
+              {{ item.name }}
+            </option>            
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="starRatingId">starRating</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="starRatingId"
+                 type="number"
+                 formControlName="starRating"
+                 [ngClass]="{'is-invalid': (productForm.get('starRating')?.touched || 
+                                             productForm.get('starRating')?.dirty) && 
+                                             !productForm.get('starRating')?.valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="productForm.get('starRating')?.errors?.range">
+              Please rate your experience from 1 to 5.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <div class="offset-md-2 col-md-4">
+          <button class="btn btn-primary mr-3"
+                  style="width:80px;"
+                  type="submit"
+                  [title]="productForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                  [disabled]="!productForm.valid">
+            Save
+          </button>
+          <button class="btn btn-outline-secondary mr-3"
+                  style="width:80px;"
+                  type="button"
+                  title="Cancel your edits"
+                  [routerLink]="['/products']">
+            Cancel
+          </button>
+          <button class="btn btn-outline-warning"
+                  style="width:80px"
+                  type="button"
+                  title="Delete this product"
+                  (click)="deleteProduct()">
+            Delete
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
 
-  <div class="form-group">
-    <label>quantityProducts</label>
-    <input
-      type="number"
-      name="quantityProducts"
-      class="form-control"
-      [(ngModel)]="model.quantityProducts"
-      #name="ngModel"
-      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
-      required
-    />
-    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
-      <p *ngIf="name.errors?.required">quantityProducts is required</p>
-    </div>
+  <div class="alert alert-danger"
+       *ngIf="errorMessage">{{errorMessage}}
   </div>
+</div>
 
-  <div class="form-group">
-    <label>unitCost</label>
-    <input
-      type="number"
-      name="unitCost"
-      class="form-control"
-      [(ngModel)]="model.unitCost"
-      #name="ngModel"
-      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
-      required
-    />
-    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
-      <p *ngIf="name.errors?.required">unitCost is required</p>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label>idPProductType</label>
-    <select
-      class="form-control"
-      name="idPProductType"
-      [(ngModel)]="model.idPProductType"
-    >
-      <option value="">Select an option</option>
-      <option *ngFor="let item of pproducts" [value]="item.id">
-        {{ item.name }}
-      </option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>idManufacturer</label>
-    <select
-      class="form-control"
-      name="idManufacturer"
-      [(ngModel)]="model.idManufacturer"
-    >
-      <option value="">Select an option</option>
-      <option *ngFor="let item of manufacturers" [value]="item.id">
-        {{ item.name }}
-      </option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>images</label>
-    <input
-      type="string"
-      name="images"
-      class="form-control"
-      [(ngModel)]="model.images"
-      #name="ngModel"
-      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
-      required
-    />
-    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
-      <p *ngIf="name.errors?.required">images is required</p>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label>starRating</label>
-    <input
-      type="number"
-      name="starRating"
-      class="form-control"
-      [(ngModel)]="model.starRating"
-      #name="ngModel"
-      [ngClass]="{ 'is-invalid': productForm.submitted && name.invalid }"
-      required
-    />
-    <div class="invalid-feedback" *ngIf="productForm.submitted && name.invalid">
-      <p *ngIf="name.errors?.required">starRating is required</p>
-    </div>
-  </div>
-  <div class="form-group">
-    <button class="btn btn-danger btn-block">Submit</button>
-  </div>
-</form>
+<br>Dirty: {{ productForm.dirty }}
+<br>Touched: {{ productForm.touched }}
+<br>Valid: {{ productForm.valid }}
+<br>Value: {{ productForm.value | json }}
+<br>&nbsp;

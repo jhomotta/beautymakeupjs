@@ -28,7 +28,7 @@ export class ItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      let id = params.get('id');
+      const id = params.get('id');
       this.id = (id == null)? '' : id;
       console.log(this.id);
     });
@@ -36,12 +36,11 @@ export class ItemComponent implements OnInit {
     this.sub = this.prouctService.getProduct(this.id).subscribe({
       next: product => {
         this.product = product;
-        console.log('Que onda wey');
+        console.log(this.product);
 
         this.sub = this.manufacturerService.getItem(String(this.product.idManufacturer)).subscribe({
           next: manufacturers => {
             this.manufacturer = manufacturers;
-            console.log(this.manufacturer);
           },
           error: err => this.errorMessage = err
         });
@@ -49,7 +48,6 @@ export class ItemComponent implements OnInit {
         this.sub = this.pproductService.getItem(String(this.product.idPProductType)).subscribe({
           next: pproducts => {
             this.pproduct = pproducts;
-            console.log(this.pproduct);
           },
           error: err => this.errorMessage = err
         });

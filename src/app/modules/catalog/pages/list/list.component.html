@@ -29,6 +29,7 @@
               <th>Available</th>
               <th>Price</th>
               <th>5 Star Rating</th>
+              <th>Operation</th>
             </tr>
           </thead>
          <tbody>
@@ -53,6 +54,7 @@
                 (ratingClicked)='onRatingClicked($event)'
                 ></pm-star>
               </td>
+              <td><button class="bg-danger" (click)="deleteItem(product.id)">Delete</button></td>
             </tr>
           </tbody>
         </table>
