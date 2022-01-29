@@ -54,7 +54,10 @@
                 (ratingClicked)='onRatingClicked($event)'
                 ></pm-star>
               </td>
-              <td><button class="bg-danger" (click)="deleteItem(product.id)">Delete</button></td>
+              <td>
+                <a class="dropdown-item" href="catalog/add/{{product.id}}">Update</a>
+              
+              </td>
             </tr>
           </tbody>
         </table>

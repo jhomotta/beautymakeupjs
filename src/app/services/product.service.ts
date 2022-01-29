@@ -42,12 +42,12 @@ export class ProductService {
     )
   }
 
-  updateProduct(item: Product): Observable<Product> {
+  updateProduct(item: Product, id: number): Observable<Product> {
     const headers = { 'content-type': 'application/json',
                       'Control-Allow-Origin': '*'} 
     console.log(item);
     const body=JSON.stringify(item);
-    return this.http.put<Product>(this.urlEndPoint + '/' + item.id, item, {'headers': headers}).pipe(
+    return this.http.put<Product>(this.urlEndPoint + '/' + id, item, {'headers': headers}).pipe(
       tap((data) => data),
       catchError(this.handleError)
     )

@@ -53,18 +53,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.pageTitle = 'Product List ' + message;
   }
 
-  deleteItem(id: number){ 
-    console.log(id);
-    this.sub = this.productService.deleteItem(id).subscribe({
-      next: itemid => {
-        console.log(itemid);
-        this.getall();
-        
-      },
-      error: err => this.errorMessage = err
-    }); 
-  }
-
   getall() {
     this.sub = this.productService.getAll().subscribe({
       next: products => {

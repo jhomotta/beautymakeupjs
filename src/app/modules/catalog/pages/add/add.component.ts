@@ -43,6 +43,7 @@ export class AddComponent implements OnInit {
   pageTitle = 'Product Edit';
 
   productForm!: FormGroup;
+  id: number = 0;
 
   //private validationMessages: { [key: string]: { [key: string]: string } };
   //private genericValidator: GenericValidator;
@@ -64,7 +65,7 @@ export class AddComponent implements OnInit {
 
     this.productForm = this.builder.group({  
       images : this.builder.array([]),
-      imageAlias: this.builder.array([]),
+      //imageAlias: this.builder.array([]),
       name :  ['', [Validators.required,
                     Validators.minLength(3),
                     Validators.maxLength(50)]],
@@ -83,9 +84,9 @@ export class AddComponent implements OnInit {
     // Read the product Id from the route parameter
     this.sub = this.router.paramMap.subscribe(
       params => {
-        const id = Number(params.get('id'));
-        console.log(id);
-        this.getProduct(id);
+        this.id = Number(params.get('id'));
+        
+        this.getProduct(this.id);
       }
     );
 
@@ -133,7 +134,7 @@ export class AddComponent implements OnInit {
   }
 
   deleteImage(i:number){
-    console.log(i);
+    
     const imageF = (this.productForm.get('images')as FormArray);
     imageF.removeAt(i);
     if(imageF.length===0){
@@ -187,11 +188,11 @@ export class AddComponent implements OnInit {
     
     this.productForm.setControl('images', this.builder.array(arraImage));
     
-    console.log('Que onda wey arraImage');
-    console.log(arraImage);
-    console.log('Que onda wey this.productForm');
-    //console.log(this.productForm);
-    console.log('Que onda wey');
+    
+    
+    
+    
+    
     
     //this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
   }
@@ -208,22 +209,24 @@ export class AddComponent implements OnInit {
 
   saveProduct(): void {
     
-    console.log(this.productForm.value.images);    
+    
     if (this.productForm.valid) {
-      if (this.productForm.dirty) {
+      //if (this.productForm.dirty) {
         var p = { ...this.productSave, ...this.productForm.value };
 
        // p = { ...this.productSave.images, ...this.productForm.value.images };
-        console.log("````````````````````````");
-        console.log(p);
+        
+        
         if (this.product.id === 0) {
+          console.log('HI');
           this.productService.setProduct(p)
             .subscribe({
               next: () => this.onSaveComplete(),
               error: err => this.errorMessage = err
             });
         } else {
-          this.productService.updateProduct(p)
+          console.log('HI 2');
+          this.productService.updateProduct(p, this.id)
             .subscribe({
               next: () => this.onSaveComplete(),
               error: err => this.errorMessage = err
@@ -233,11 +236,11 @@ export class AddComponent implements OnInit {
         this.onSaveComplete();
       }
       
-    }
+    //}
   }
 
   deleteProduct(): void {
-    console.error(this.product.id)
+    
     if (this.product.id === 0) {
       // Don't delete, it was never saved.
       this.onSaveComplete();

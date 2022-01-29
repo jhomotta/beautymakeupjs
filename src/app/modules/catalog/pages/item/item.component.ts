@@ -3,10 +3,11 @@ import { Pproduct } from './../../../../model/pproduct';
 import { Subscription } from 'rxjs';
 import { ProductService } from 'src/app/services/product.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from 'src/app/model/product';
 import { PproductService } from 'src/app/services/pproduct.service';
 import { ManufacturerService } from 'src/app/services/manufacturer.service';
+
 
 @Component({
   selector: 'app-item',
@@ -16,9 +17,10 @@ import { ManufacturerService } from 'src/app/services/manufacturer.service';
 export class ItemComponent implements OnInit {
   
   constructor(private route: ActivatedRoute,
+              private rout: Router,
               private pproductService: PproductService,
               private manufacturerService: ManufacturerService,
-              private prouctService: ProductService) { }
+              private productService: ProductService) { }
   id: String = '';
   product = {} as Product;
   sub?: Subscription;
@@ -33,7 +35,7 @@ export class ItemComponent implements OnInit {
       console.log(this.id);
     });
 
-    this.sub = this.prouctService.getProduct(this.id).subscribe({
+    this.sub = this.productService.getProduct(this.id).subscribe({
       next: product => {
         this.product = product;
         console.log(this.product);
@@ -57,8 +59,22 @@ export class ItemComponent implements OnInit {
     });
 
     
+    
 
     
+  }
+
+
+  deleteItem(id: number){ 
+    console.log(id);
+    this.sub = this.productService.deleteItem(id).subscribe({
+      next: itemid => {
+        console.log(itemid);
+        //this.getall();
+        this.rout.navigate(['/products']);
+      },
+      error: err => this.errorMessage = err
+    }); 
   }
 
 }
