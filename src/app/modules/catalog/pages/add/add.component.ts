@@ -35,21 +35,20 @@ export class AddComponent implements OnInit {
   model = {} as Product;
   product = {} as Product;
   productSave = {} as Product;
-  imgs: Image[] = [];
+
   img = {} as Image;
   pproducts: Pproduct[] = [];
   manufacturers: Manufacturer[] = [];
   errorMessage: string = '';
   pageTitle = 'Product Edit';
 
-  productForm: FormGroup;
+  productForm!: FormGroup;
 
   //private validationMessages: { [key: string]: { [key: string]: string } };
   //private genericValidator: GenericValidator;
 
- 
-  get images(): FormArray{  
-    return <FormArray>this.productForm.get('images')
+  getimagesControls() {
+    return (this.productForm.get('images') as FormArray).controls;
   }
 
   constructor(private pproductService: PproductService,
@@ -59,25 +58,25 @@ export class AddComponent implements OnInit {
               private route: Router,
               private builder: FormBuilder)  {
 
-                this.productForm = this.builder.group({  
-                  images : this.builder.array([ this.buildImages()]),
-                  name :  ['', [Validators.required,
-                                Validators.minLength(3),
-                                Validators.maxLength(50)]],
-                  description : ['', [Validators.required, Validators.maxLength(50)]],
-                  quantityProducts : new FormControl('', Validators.compose([Validators.pattern("^[0-9]*$"), ratingRange(0, 500000), Validators.required])),
-                  unitCost : new FormControl('', Validators.compose([Validators.pattern("^[0-9]*$"), ratingRange(0, 500000), Validators.required])),
-                  ////state : new FormControl('', Validators.required),
-                  idPProductType : new FormControl('', Validators.required),
-                  idManufacturer : new FormControl('', Validators.required),
-                  starRating : [null, ratingRange(1, 5)],
-                  sendCatalog: true,
-                }); 
-
-                
               }
 
   ngOnInit(): void {
+
+    this.productForm = this.builder.group({  
+      images : this.builder.array([]),
+      imageAlias: this.builder.array([]),
+      name :  ['', [Validators.required,
+                    Validators.minLength(3),
+                    Validators.maxLength(50)]],
+      description : ['', [Validators.required, Validators.maxLength(50)]],
+      quantityProducts : new FormControl('', Validators.compose([Validators.pattern("^[0-9]*$"), ratingRange(0, 500000), Validators.required])),
+      unitCost : new FormControl('', Validators.compose([Validators.pattern("^[0-9]*$"), ratingRange(0, 500000), Validators.required])),
+      ////state : new FormControl('', Validators.required),
+      idPProductType : new FormControl('', Validators.required),
+      idManufacturer : new FormControl('', Validators.required),
+      starRating : [null, ratingRange(1, 5)],
+      sendCatalog: true,
+    }); 
 
     
 
@@ -103,6 +102,9 @@ export class AddComponent implements OnInit {
       },
       error: err => this.errorMessage = err
     });
+
+    
+    this.addNewImage();
     
   }
 
@@ -119,13 +121,24 @@ export class AddComponent implements OnInit {
     });
   }
   
-  buildImages() :FormGroup{
-    return this.builder.group({
-      pathPicture: ['', [Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(500)]],
+  addNewImage() {
+    const imageF = this.productForm.get('images') as FormArray;
+    imageF.push(
+        this.builder.group({
+          pathPicture: ['', [Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(500)]],
         id: 0
-    })
+    }));
+  }
+
+  deleteImage(i:number){
+    console.log(i);
+    const imageF = (this.productForm.get('images')as FormArray);
+    imageF.removeAt(i);
+    if(imageF.length===0){
+      this.addNewImage();
+    }
   }
 
  
@@ -141,8 +154,22 @@ export class AddComponent implements OnInit {
     } else {
       this.pageTitle = `Edit Product: ${this.product.name}`;
     }
-    console.log(this.product)
+    
+    //this.productForm.setControl('images', this.builder.array(this.product.images || []) as FormArray);
     // Update the data on the form
+    let arraImage: any[] = new Array();
+
+
+    this.product.images.forEach( (img) => {
+      var imagebg = this.builder.group({
+        pathPicture: img.pathPicture,
+        id: img.id
+      });
+      arraImage.push(imagebg);
+    }); 
+
+    //arraImage.push(this.product.images[1]);
+
     this.productForm.patchValue({
       name: this.product.name,
       description: this.product.description,
@@ -151,12 +178,19 @@ export class AddComponent implements OnInit {
       idPProductType: this.product.idPProductType,
       idManufacturer: this.product.idManufacturer,
       starRating: this.product.starRating,
+      //images: arraImage
       
     });
 
-    this.productForm.setControl('images', this.builder.array(product.images || []))
-    console.log('Que onda wey');
-    console.log(this.productForm);
+    //this.productForm.setControl('images', this.product.images);
+    
+    
+    this.productForm.setControl('images', this.builder.array(arraImage));
+    
+    console.log('Que onda wey arraImage');
+    console.log(arraImage);
+    console.log('Que onda wey this.productForm');
+    //console.log(this.productForm);
     console.log('Que onda wey');
     
     //this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
@@ -169,10 +203,6 @@ export class AddComponent implements OnInit {
     });
   }
 
-
-  addImages(): void {
-    this.images.push(this.buildImages());
-  }
 
 
 

@@ -56,10 +56,10 @@
       </div>
 
       
-      <div formArrayName="images" *ngFor="let item of images.controls; let i = index">
-        <div [formGroupName]="i">
+      <div formArrayName="images" >
+        <div [formGroupName]="i" *ngFor="let item of getimagesControls(); let i = index">
           <div class="form-group row mb-2">
-
+            <p style="color: brown; border: black;">{{item}}</p>
 
             <label class="col-md-2 col-form-label"
             attr.for="{{'id' + i}}">id</label>
@@ -71,17 +71,15 @@
                       formControlName="id">
             </div>
 
+           
+
             <label class="col-md-2 col-form-label"
                     attr.for="{{ 'pathPicture' + i}}">pathPicture</label>
             <div class="col-md-8">
               <input class="form-control"
-                      id="{{ 'pathPicture' + i}}"
                       type="text"
                       placeholder="pathPicture (required)"
-                      formControlName="pathPicture"
-                      [ngClass]="{'is-invalid': (productForm.get('pathPicture')?.touched ||
-                                                productForm.get('pathPicture')?.dirty) &&
-                                                !productForm.get('pathPicture')?.valid }" />
+                      formControlName="pathPicture"/>
               <span class="invalid-feedback">
                 <span *ngIf="productForm.get('pathPicture')?.errors?.required">
                   Please enter your first pathPicture.
@@ -91,6 +89,7 @@
                 </span>
               </span>
             </div>
+            <button type="button" (click)="deleteImage(i)">X {{i}}</button>
           </div>
         </div>
       </div>
@@ -98,9 +97,8 @@
         <div class="col-md-4">
           <button class="btn btn-outline-primary"
                   type="button"
-                  [title]="images.valid ? 'Add another mailing address' : 'Disabled until the existing address data is valid'"
-                  [disabled]="!images.valid"
-                  (click)="addImages()">
+                  
+                  (click)="addNewImage()">
             Add Another Image
           </button>
         </div>
