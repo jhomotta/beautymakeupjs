@@ -24,6 +24,15 @@ function ratingRange(min: number, max: number): ValidatorFn {
   };
 }
 
+function greaterthanZero(min: number): ValidatorFn {
+  return (c: AbstractControl): { [key: string]: boolean } | null => {
+    if (c.value !== null && (isNaN(c.value) || c.value < min)) {
+      return { range: true };
+    }
+    return null;
+  };
+}
+
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -71,7 +80,7 @@ export class AddComponent implements OnInit {
                     Validators.maxLength(50)]],
       description : ['', [Validators.required, Validators.maxLength(50)]],
       quantityProducts : new FormControl('', Validators.compose([Validators.pattern("^[0-9]*$"), ratingRange(0, 500000), Validators.required])),
-      unitCost : new FormControl('', Validators.compose([Validators.pattern("^[0-9]*$"), ratingRange(0, 500000), Validators.required])),
+      unitCost : new FormControl('', Validators.compose([Validators.pattern("^[0-9]*$"), greaterthanZero(0), Validators.required])),
       ////state : new FormControl('', Validators.required),
       idPProductType : new FormControl('', Validators.required),
       idManufacturer : new FormControl('', Validators.required),

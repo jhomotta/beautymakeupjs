@@ -149,7 +149,7 @@
           <select class="form-control"
                   id="idPProductType"
                   formControlName="idPProductType">
-            <option value="">Select an option</option>
+            <option value="0">Select an option</option>
             <option *ngFor="let item of pproducts" [value]="item.id">
               {{ item.name }}
             </option>            
@@ -164,11 +164,7 @@
           <select class="form-control"
                   id="idManufacturer"
                   formControlName="idManufacturer">
-            <option 
-            value=""
-            disabled
-            selected
-            hidden>Select an option</option>
+            <option value="0" selected>Select an option</option>
             <option *ngFor="let item of manufacturers" [value]="item.id">
               {{ item.name }}
             </option>            
